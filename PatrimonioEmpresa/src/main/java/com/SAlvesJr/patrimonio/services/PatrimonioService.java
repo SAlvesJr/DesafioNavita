@@ -14,6 +14,6 @@ public interface PatrimonioService {
 
 	Patrimonio update(Patrimonio patrimonio);
 
-	void Delete(Long id);
+	void delete(Long id);
 
 }

@@ -14,6 +14,6 @@ public interface MarcaService {
 
 	Marca update(Marca marca);
 
-	void Delete(Long id);
+	void delete(Long id);
 
 }
