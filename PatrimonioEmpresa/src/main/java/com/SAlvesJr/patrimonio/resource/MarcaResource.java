@@ -45,7 +45,7 @@ public class MarcaResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@GetMapping(value = "/{id}/marca/patrimonio")
+	@GetMapping(value = "/{id}/patrimonio")
 	public ResponseEntity<List<PatrimonioDto>> findMarcaAndPatrimonioByMarcaId(@PathVariable Long id) {
 		List<PatrimonioDto> obj = serviceImpl.listAllPatrimonioByMarcaId(id);
 		return ResponseEntity.ok().body(obj);
