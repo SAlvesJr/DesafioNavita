@@ -22,7 +22,7 @@ import com.SAlvesJr.patrimonio.model.entity.Patrimonio;
 import com.SAlvesJr.patrimonio.services.Impl.PatrimonioServiceImpl;
 
 @RestController
-@RequestMapping(value = "/patrimonio")
+@RequestMapping(value = "/patrimonios")
 public class PatrimonioResource {
 
 	private PatrimonioServiceImpl serviceImpl;
@@ -32,8 +32,8 @@ public class PatrimonioResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<PatrimonioDto>> findCategoria() {
-		List<Patrimonio> patri = serviceImpl.listAll();
+	public ResponseEntity<List<PatrimonioDto>> findPatrimonio() {
+		List<Patrimonio> patri = serviceImpl.findAll();
 		List<PatrimonioDto> objDto = patri.stream().map(obj -> new PatrimonioDto(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(objDto);
 	}
@@ -45,7 +45,7 @@ public class PatrimonioResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insertCliente(@Valid @RequestBody PatrimonioDto objDTO) {
+	public ResponseEntity<Void> insertPatrimonio(@Valid @RequestBody PatrimonioDto objDTO) {
 		var patri = serviceImpl.fromDto(objDTO);
 		patri = serviceImpl.insert(patri);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(patri.getId()).toUri();
@@ -53,15 +53,15 @@ public class PatrimonioResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> putCliente(@Valid @RequestBody PatrimonioDto objDTO, @PathVariable Long id) {
-		var patri = serviceImpl.fromDto(objDTO);
+	public ResponseEntity<Void> putPatrimonio(@Valid @RequestBody PatrimonioDto objDTO, @PathVariable Long id) {
+		var patri = serviceImpl.fromDto(objDTO, id);
 		patri.setId(id);
 		patri = serviceImpl.update(patri);
 		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
+	public ResponseEntity<?> deletePatrimonio(@PathVariable Long id) {
 		serviceImpl.delete(id);
 		return ResponseEntity.noContent().build();
 	}

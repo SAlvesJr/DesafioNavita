@@ -23,7 +23,7 @@ import com.SAlvesJr.patrimonio.model.entity.Marca;
 import com.SAlvesJr.patrimonio.services.Impl.MarcaServiceImpl;
 
 @RestController
-@RequestMapping(value = "/marca")
+@RequestMapping(value = "/marcas")
 public class MarcaResource {
 
 	private MarcaServiceImpl serviceImpl;
@@ -33,8 +33,8 @@ public class MarcaResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<MarcaDto>> findCategoria() {
-		List<Marca> cat = serviceImpl.listAll();
+	public ResponseEntity<List<MarcaDto>> findMarca() {
+		List<Marca> cat = serviceImpl.findList();
 		List<MarcaDto> objDto = cat.stream().map(obj -> new MarcaDto(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(objDto);
 	}
@@ -47,12 +47,12 @@ public class MarcaResource {
 
 	@GetMapping(value = "/{id}/marca/patrimonio")
 	public ResponseEntity<List<PatrimonioDto>> findMarcaAndPatrimonioByMarcaId(@PathVariable Long id) {
-		List<PatrimonioDto> obj = serviceImpl.listaTodoOsPatrimoniosPelaMarca(id);
+		List<PatrimonioDto> obj = serviceImpl.listAllPatrimonioByMarcaId(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insertCliente(@Valid @RequestBody MarcaDto objDTO) {
+	public ResponseEntity<Void> insertMarca(@Valid @RequestBody MarcaDto objDTO) {
 		var marca = serviceImpl.fromDto(objDTO);
 		marca = serviceImpl.insert(marca);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(marca.getId()).toUri();
@@ -60,7 +60,7 @@ public class MarcaResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> putCliente(@Valid @RequestBody MarcaDto objDTO, @PathVariable Long id) {
+	public ResponseEntity<Void> putMarca(@Valid @RequestBody MarcaDto objDTO, @PathVariable Long id) {
 		var marca = serviceImpl.fromDto(objDTO);
 		marca.setId(id);
 		marca = serviceImpl.update(marca);
@@ -68,7 +68,7 @@ public class MarcaResource {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
+	public ResponseEntity<?> deleteMarca(@PathVariable Long id) {
 		serviceImpl.delete(id);
 		return ResponseEntity.noContent().build();
 	}

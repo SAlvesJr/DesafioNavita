@@ -46,10 +46,12 @@ public class DBService {
 		marcaRepository.saveAll(Arrays.asList(marca1, marca2));
 
 		Patrimonio patri1 = new Patrimonio(null, "tecnologia", "valor: US$ 50,4 bilhões e Receita: US$ 209,5 bilhões",
-				1L, marca1);
+				1L);
 		Patrimonio patri2 = new Patrimonio(null, "tecnologia", "Valor: US$ 135,4 bilhões e Receita: US$ 260,5 bilhões",
-				2L, marca1);
-		
+				2L);
+		patri1.setMarca(marca1);
+		patri2.setMarca(marca1);
+
 		patrimonioRepository.saveAll(Arrays.asList(patri1, patri2));
 
 	}

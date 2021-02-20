@@ -2,18 +2,20 @@ package com.SAlvesJr.patrimonio.services.Impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.SAlvesJr.patrimonio.excetion.DataIntegrityException;
-import com.SAlvesJr.patrimonio.excetion.ObjectNotFoundException;
 import com.SAlvesJr.patrimonio.model.dto.MarcaDto;
+import com.SAlvesJr.patrimonio.model.dto.PatrimonioDto;
 import com.SAlvesJr.patrimonio.model.entity.Marca;
 import com.SAlvesJr.patrimonio.repositories.MarcaRepository;
 import com.SAlvesJr.patrimonio.repositories.PatrimonioRepository;
 import com.SAlvesJr.patrimonio.services.MarcaService;
+import com.SAlvesJr.patrimonio.services.excetion.DataIntegrityException;
+import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
 
 @Service
 @Transactional
@@ -45,7 +47,7 @@ public class MarcaServiceImpl implements MarcaService {
 	 * Lista todas as marcas.
 	 */
 	@Override
-	public List<Marca> listAll() {
+	public List<Marca> findList() {
 		return marcaRepository.findAll();
 	}
 
@@ -54,11 +56,7 @@ public class MarcaServiceImpl implements MarcaService {
 	 */
 	@Override
 	public Marca insert(Marca marca) {
-		try {
-			return marcaRepository.save(marca);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é inserir a marca");
-		}
+		return marcaRepository.save(marca);
 	}
 
 	/**
@@ -67,7 +65,7 @@ public class MarcaServiceImpl implements MarcaService {
 	 * @param marca
 	 * @return
 	 */
-	public Marca findByNome(Marca marca) {
+	public Marca findByName(Marca marca) {
 		return marcaRepository.findByNome(marca.getNome());
 	}
 
@@ -97,7 +95,25 @@ public class MarcaServiceImpl implements MarcaService {
 		marcaRepository.deleteById(id);
 	}
 
+	/**
+	 * Metodo auxiliar para tranforma marcaDto em objeto marca;.
+	 * 
+	 * @param marcaDto
+	 * @return
+	 */
 	public Marca fromDto(MarcaDto marcaDto) {
 		return new Marca(marcaDto.getId(), marcaDto.getNome(), marcaDto.getMarcaId());
+	}
+
+	/**
+	 * Busca todos os patrimonios pela identificado da marca;
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<PatrimonioDto> listAllPatrimonioByMarcaId(Long marcaId) {
+		var marca = findById(marcaId);
+		return patrimonioRepository.findByMarca(marca).stream().map(p -> new PatrimonioDto(p))
+				.collect(Collectors.toList());
 	}
 }

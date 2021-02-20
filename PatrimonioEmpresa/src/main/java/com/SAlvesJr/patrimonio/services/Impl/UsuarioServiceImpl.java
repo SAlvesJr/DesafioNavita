@@ -8,18 +8,18 @@ import javax.validation.Valid;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.SAlvesJr.patrimonio.excetion.ObjectNotFoundException;
 import com.SAlvesJr.patrimonio.model.dto.UsuarioDto;
 import com.SAlvesJr.patrimonio.model.dto.UsuarioNewDto;
 import com.SAlvesJr.patrimonio.model.entity.Usuario;
 import com.SAlvesJr.patrimonio.repositories.UsuarioRepository;
 import com.SAlvesJr.patrimonio.services.UsuarioService;
+import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
 	private UsuarioRepository usuarioRepository;
-	
+
 	private BCryptPasswordEncoder dCruypt;
 
 	public UsuarioServiceImpl(UsuarioRepository usuarioRepository, BCryptPasswordEncoder dCruypt) {
@@ -28,8 +28,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	}
 
-	public Usuario findByEmail(Usuario user) {
-		return usuarioRepository.findByEmail(user.getEmail());
+	public Usuario findByEmail(String userEmail) {
+		return usuarioRepository.findByEmail(userEmail);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public List<Usuario> listAll() {
+	public List<Usuario> findAll() {
 		return usuarioRepository.findAll();
 	}
 
@@ -50,8 +50,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario update(Usuario user) {
-		return usuarioRepository.save(user);
+	public Usuario update(Usuario user, Long id) {
+		var userNew = findById(id);
+		alterUser(user, userNew);
+		return usuarioRepository.save(userNew);
+	}
+
+	private void alterUser(Usuario user, Usuario userNew) {
+		userNew.setNome(user.getNome());
+		userNew.setEmail(user.getEmail());
+
 	}
 
 	@Override

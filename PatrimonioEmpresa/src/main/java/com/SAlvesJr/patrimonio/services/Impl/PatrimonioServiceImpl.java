@@ -1,19 +1,23 @@
 package com.SAlvesJr.patrimonio.services.Impl;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.SAlvesJr.patrimonio.excetion.DataIntegrityException;
-import com.SAlvesJr.patrimonio.excetion.ObjectNotFoundException;
 import com.SAlvesJr.patrimonio.model.dto.PatrimonioDto;
 import com.SAlvesJr.patrimonio.model.entity.Marca;
 import com.SAlvesJr.patrimonio.model.entity.Patrimonio;
 import com.SAlvesJr.patrimonio.repositories.MarcaRepository;
 import com.SAlvesJr.patrimonio.repositories.PatrimonioRepository;
 import com.SAlvesJr.patrimonio.services.PatrimonioService;
+import com.SAlvesJr.patrimonio.services.excetion.DataIntegrityException;
+import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
 
 @Service
 public class PatrimonioServiceImpl implements PatrimonioService {
@@ -43,9 +47,9 @@ public class PatrimonioServiceImpl implements PatrimonioService {
 	public Long findByNumeroTombo() {
 		return patrimonioRepository.findMaxNumeroTombo();
 	}
-	
+
 	public List<Patrimonio> findByMarca(Marca marca) {
-		return patrimonioRepository.findByMarca(marca.getId());
+		return patrimonioRepository.findByMarca(marca);
 	}
 
 	/**
@@ -54,7 +58,7 @@ public class PatrimonioServiceImpl implements PatrimonioService {
 	 * @return lista de patrimonios
 	 */
 	@Override
-	public List<Patrimonio> listAll() {
+	public List<Patrimonio> findAll() {
 		return patrimonioRepository.findAll();
 	}
 
@@ -64,8 +68,20 @@ public class PatrimonioServiceImpl implements PatrimonioService {
 	 * @return o patrimonio inserido no banco
 	 */
 	@Override
+	@Transactional
 	public Patrimonio insert(Patrimonio patrimonio) {
-		return patrimonioRepository.save(patrimonio);
+		Marca marca = marcaRepository.findOneByMarcaId(patrimonio.getMarca().getId());
+		if (marca != null) {
+			var numTomboParaSomar = findByNumeroTombo();
+			if (numTomboParaSomar == null) {
+				patrimonio.setNumeroTombo(BigInteger.ONE.longValue());
+				return patrimonioRepository.save(patrimonio);
+			}
+			patrimonio.setNumeroTombo(Long.sum(numTomboParaSomar, BigInteger.ONE.longValue()));
+			return patrimonioRepository.save(patrimonio);
+		}
+
+		throw new DataIntegrityException("Não é possível salva o patrimonio sem a referencia a sua marca corretamente");
 	}
 
 	/**
@@ -107,9 +123,26 @@ public class PatrimonioServiceImpl implements PatrimonioService {
 	 * @return patrimonio
 	 */
 	public Patrimonio fromDto(PatrimonioDto patrimonioDto) {
-		Patrimonio patrimonio = new Patrimonio(patrimonioDto.getId(), patrimonioDto.getNome(),
-				patrimonioDto.getDescricao(), patrimonioDto.getNumeroTombo(), null);
+		Patrimonio patrimonio = new Patrimonio(null, patrimonioDto.getNome(), patrimonioDto.getDescricao(), null);
 		patrimonio.setMarca(marcaRepository.getOne(patrimonioDto.getMarcaId()));
+		return patrimonio;
+	}
+
+	/**
+	 * Método auxiliar que tranforma um patrimonioDto em um patrimonio.
+	 * 
+	 * @param objDTO
+	 * @param id
+	 * @return
+	 */
+	public Patrimonio fromDto(@Valid PatrimonioDto objDTO, Long id) {
+		var marca = marcaRepository.findOneByMarcaId(objDTO.getMarcaId());
+		if (marca == null) {
+			throw new DataIntegrityException(
+					"Não é possível salva o patrimonio sem a referencia a sua marca corretamente");
+		}
+		Patrimonio patrimonio = new Patrimonio(id, objDTO.getNome(), objDTO.getDescricao(), null);
+		patrimonio.setMarca(marca);
 		return patrimonio;
 	}
 

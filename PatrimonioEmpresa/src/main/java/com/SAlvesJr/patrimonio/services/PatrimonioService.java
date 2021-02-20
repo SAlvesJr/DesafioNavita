@@ -8,7 +8,7 @@ public interface PatrimonioService {
 
 	Patrimonio findById(Long id);
 
-	List<Patrimonio> listAll();
+	List<Patrimonio> findAll();
 
 	Patrimonio insert(Patrimonio patrimonio);
 

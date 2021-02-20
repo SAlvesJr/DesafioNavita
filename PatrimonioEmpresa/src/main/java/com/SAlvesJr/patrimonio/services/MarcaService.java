@@ -8,7 +8,7 @@ public interface MarcaService {
 	
 	Marca findById(Long id);
 
-	List<Marca> listAll();
+	List<Marca> findList();
 
 	Marca insert(Marca marca);
 

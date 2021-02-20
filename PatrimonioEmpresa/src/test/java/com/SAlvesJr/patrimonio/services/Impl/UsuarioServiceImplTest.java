@@ -29,9 +29,9 @@ class UsuarioServiceImplTest {
 		Usuario user = new Usuario(null, "Sergio", "xihema5423@bulkbye.com",
 				this.bCryptPasswordEncoder.encode("12345"));
 		usuarioService.insert(user);
-		Usuario userEmail = usuarioService.findByEmail(user);
+		Usuario userEmail = usuarioService.findByEmail(user.getEmail());
 		assertEquals("xihema5423@bulkbye.com", userEmail.getEmail());
-		usuarioService.Delete(userEmail.getId());
+		usuarioService.delete(userEmail.getId());
 	}
 
 	@Test
@@ -42,6 +42,8 @@ class UsuarioServiceImplTest {
 		Usuario user2 = new Usuario(null, "Sergio", "nibiy35939@bulkbye.com",
 				this.bCryptPasswordEncoder.encode("12345"));
 		assertThrows(DataIntegrityViolationException.class, () -> usuarioService.insert(user2));
+		
+		usuarioService.delete(user1.getId());
 	}
 
 	@Test

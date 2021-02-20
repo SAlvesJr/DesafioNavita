@@ -8,11 +8,11 @@ public interface UsuarioService {
 
 	Usuario findById(Long id);
 
-	List<Usuario> listAll();
+	List<Usuario> findAll();
 
 	Usuario insert(Usuario user);
 
-	Usuario update(Usuario user);
+	Usuario update(Usuario user, Long id);
 
 	void delete(Long id);
 
