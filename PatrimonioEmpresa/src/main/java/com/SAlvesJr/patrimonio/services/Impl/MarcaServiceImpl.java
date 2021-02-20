@@ -14,8 +14,8 @@ import com.SAlvesJr.patrimonio.model.entity.Marca;
 import com.SAlvesJr.patrimonio.repositories.MarcaRepository;
 import com.SAlvesJr.patrimonio.repositories.PatrimonioRepository;
 import com.SAlvesJr.patrimonio.services.MarcaService;
-import com.SAlvesJr.patrimonio.services.excetion.DataIntegrityException;
-import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
+import com.SAlvesJr.patrimonio.services.exception.DataIntegrityException;
+import com.SAlvesJr.patrimonio.services.exception.ObjectNotFoundException;
 
 @Service
 @Transactional

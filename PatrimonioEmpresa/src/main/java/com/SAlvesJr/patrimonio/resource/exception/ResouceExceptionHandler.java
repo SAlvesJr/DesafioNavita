@@ -9,8 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.SAlvesJr.patrimonio.services.excetion.DataIntegrityException;
-import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
+import com.SAlvesJr.patrimonio.services.exception.DataIntegrityException;
+import com.SAlvesJr.patrimonio.services.exception.ObjectNotFoundException;
 
 
 @ControllerAdvice

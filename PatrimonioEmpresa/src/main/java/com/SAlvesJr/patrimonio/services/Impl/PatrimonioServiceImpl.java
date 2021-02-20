@@ -16,8 +16,8 @@ import com.SAlvesJr.patrimonio.model.entity.Patrimonio;
 import com.SAlvesJr.patrimonio.repositories.MarcaRepository;
 import com.SAlvesJr.patrimonio.repositories.PatrimonioRepository;
 import com.SAlvesJr.patrimonio.services.PatrimonioService;
-import com.SAlvesJr.patrimonio.services.excetion.DataIntegrityException;
-import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
+import com.SAlvesJr.patrimonio.services.exception.DataIntegrityException;
+import com.SAlvesJr.patrimonio.services.exception.ObjectNotFoundException;
 
 @Service
 public class PatrimonioServiceImpl implements PatrimonioService {

@@ -1,4 +1,4 @@
-package com.SAlvesJr.patrimonio.services.excetion;
+package com.SAlvesJr.patrimonio.services.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
 

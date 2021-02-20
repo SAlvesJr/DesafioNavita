@@ -13,7 +13,7 @@ import com.SAlvesJr.patrimonio.model.dto.UsuarioNewDto;
 import com.SAlvesJr.patrimonio.model.entity.Usuario;
 import com.SAlvesJr.patrimonio.repositories.UsuarioRepository;
 import com.SAlvesJr.patrimonio.services.UsuarioService;
-import com.SAlvesJr.patrimonio.services.excetion.ObjectNotFoundException;
+import com.SAlvesJr.patrimonio.services.exception.ObjectNotFoundException;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
